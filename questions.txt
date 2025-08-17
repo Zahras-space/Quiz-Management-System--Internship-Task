@@ -1,0 +1,60 @@
+Which programming language is officially supported by Google for Android development?
+A) Java
+B) Kotlin
+C) Swift
+D) C#
+B
+What is the file extension of Kotlin source files?
+A) .kt
+B) .java
+C) .kts
+D) .kotlin
+A
+Which keyword is used to declare a read-only variable in Kotlin?
+A) val
+B) var
+C) const
+D) final
+A
+Which collection type in Kotlin allows duplicate elements?
+A) Set
+B) List
+C) Map
+D) Queue
+B
+What does JVM stand for?
+A) Java Virtual Machine
+B) Java Visual Model
+C) Joint Virtual Module
+D) Java Variable Memory
+A
+Which symbol is used for string interpolation in Kotlin?
+A) $
+B) #
+C) @
+D) &
+A
+In object-oriented programming, which concept allows a class to inherit properties from another class?
+A) Encapsulation
+B) Polymorphism
+C) Inheritance
+D) Abstraction
+C
+Which keyword is used to create a subclass in Kotlin?
+A) inherits
+B) extends
+C) :
+D) implements
+C
+In Java, which access modifier makes a member visible only within the same package?
+A) private
+B) public
+C) protected
+D) default
+D
+Which function is the entry point of a Kotlin program?
+A) start()
+B) init()
+C) main()
+D) run()
+C
