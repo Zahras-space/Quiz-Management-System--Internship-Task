@@ -1,8 +1,13 @@
 import kotlin.system.exitProcess
 import kotlinx.coroutines.*
 
-
+data class Question(
+    val question: String,
+    val options: List<String>,
+    val correctAnswer: String
+)
 val questions = mutableListOf<Question>()
+
 fun main()= runBlocking {
     val mainQuiz = MainQuiz()
     launch {
@@ -35,7 +40,7 @@ class App {
 
 }
 
-class Verify {
+class Authentication {
     fun verifyCredentials(email: String, password: String, credentialsArray: Array<Pair<String, String>>): Boolean {
         for (credential in credentialsArray) {                     // Loop through each Pair in the credentialsArray
             if (credential.first == email && credential.second == password) {   // Check if both email and password match
@@ -44,6 +49,25 @@ class Verify {
         }
         return false // No matching credentials found after checking all entries
     }
+
+    fun teacherVerify(email: String, password: String): Boolean {
+        val teacherCredentials = arrayOf(
+            Pair("teacher@example.com", "123"),
+            Pair("ali@comsats.edu", "ali123")
+        )
+        val check= verifyCredentials(email, password, teacherCredentials)
+        return check
+    }
+    fun studentVerify(email: String, password: String): Boolean {
+        val studentCredentials = arrayOf(
+            Pair("student@example.com", "password"),
+            Pair("john.doe@learn.org", "learnpass"),
+            Pair("jane.student@academy.net", "kotlinfun")
+        )
+        val check= verifyCredentials(email, password, studentCredentials)
+        return check
+    }
+
 }
 
 abstract class User(){
@@ -53,14 +77,8 @@ abstract class User(){
     abstract fun mainmenu()
 }
 
-data class Question(
-    val question: String,
-    val options: List<String>,
-    val correctAnswer: String
-)
-
 class MainQuiz{
-     fun displayQuiz() {
+    fun displayQuiz() {
         var score = 0
 
         println("--------Welcome to the Quiz!--------")
@@ -104,18 +122,18 @@ class MainQuiz{
                 "question" to "What does JVM stand for?",
                 "options" to listOf("Java Virtual Machine", "Java Visual Model", "Joint Virtual Module", "Java Variable Memory"),
                 "answer" to "D"
-        )
+            )
 
         )
 
         // Convert map data into Question objects
-       return questionList.map { q ->
-           Question(
-               q["question"] as String,
-               q["options"] as List<String>,
-               q["answer"] as String
-           )
-       }
+        return questionList.map { q ->
+            Question(
+                q["question"] as String,
+                q["options"] as List<String>,
+                q["answer"] as String
+            )
+        }
     }
 
     fun addQuestions(){
@@ -145,7 +163,7 @@ class MainQuiz{
         )
         println("Question Added Successfully")
         return
-        }
+    }
 
     fun editQuestions(){
         println("Enter the question no. to edit")
@@ -179,11 +197,11 @@ class MainQuiz{
             options = options,
             correctAnswer = correctAnswer
         )
-    return
+        return
     }
 
     fun deleteQuestions(){
-    println("Enter the question no. to delete")
+        println("Enter the question no. to delete")
         val remove_question= readLine()!!.toInt()
         while(remove_question!=0 && remove_question > questions.size+1){
             println("Enter a Valid Question No.")
@@ -203,20 +221,14 @@ class MainQuiz{
             println("Correct Answer: ${q.correctAnswer}")
         }
         println("\nTotal Questions: ${questions.size}")
-    return
+        return
     }
 }
 
-
                                         //TEACHER PORTAL//
 class Teacher(): User() {
-    val verify = Verify()
+                                            val authentication = Authentication()
     val questions = MainQuiz()
-    val teacherCredentials = arrayOf(
-        Pair("teacher@example.com", "123"),
-        Pair("ali@comsats.edu", "ali123")
-    )
-
     override lateinit var password: String
     override lateinit var email: String
 
@@ -229,8 +241,7 @@ class Teacher(): User() {
         email = readLine()!!
         println("Enter your password:")
         password = readLine()!!
-        val check = verify.verifyCredentials(email, password, teacherCredentials)
-
+        val check = authentication.teacherVerify(email, password)
         when (check) {
             true -> mainmenu()
             false -> {
@@ -264,17 +275,11 @@ class Teacher(): User() {
 
                                    //   STUDENT PORTAL //
 class Student(): User() {
-    val verify = Verify()
+    val authentication = Authentication()
     val questions = MainQuiz()
-
     override lateinit var password: String
     override lateinit var email: String
 
-    val studentCredentials = arrayOf(
-        Pair("student@example.com", "password"),
-        Pair("john.doe@learn.org", "learnpass"),
-        Pair("jane.student@academy.net", "kotlinfun")
-    )
     override
     fun login() {
         println("\n\n==================")
@@ -284,7 +289,7 @@ class Student(): User() {
         email = readLine()!!
         println("Enter your password:")
         password = readLine()!!
-        val check = verify.verifyCredentials(email, password, studentCredentials)
+        val check = authentication.teacherVerify(email, password)
         when (check) {
             true -> mainmenu()
             false -> {
@@ -294,7 +299,6 @@ class Student(): User() {
         }
 
     }
-
     override
     fun mainmenu() {
         val options = arrayOf( // Arrays + Scopes (apply)
